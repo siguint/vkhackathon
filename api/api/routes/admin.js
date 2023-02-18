@@ -1,6 +1,6 @@
 import express from "express";
 
-import { submitEvent, getEvent, getToken, getAllEvents, getAllTokens, getTreeProof, postEvent, postToken, getTree } from "../controllers/admin";
+import { submitEvent, getEvent, getToken, getAllEvents, getAllTokens, getTreeProof, postEvent, postToken, getTree, postTree } from "../controllers/admin";
 
 const router = express.Router();
 
@@ -21,5 +21,7 @@ router.get("/:event/:signature", validateEvent, validateSignature, getTreeProof)
 router.post("/:address/:event/:text", validateAddress, validateEvent, validateText, postEvent);
 
 router.post("/:event/:token_id/:name", validateEvent, validateTokenId, validateName, postToken);
+
+router.post("/:event/:tree", validateEvent, validateTree, postTree);
 
 export default router;
