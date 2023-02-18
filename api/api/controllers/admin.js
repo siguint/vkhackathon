@@ -79,7 +79,7 @@ const postToken = async (req, res) => {
   res.status(200)
 }
 
-export { submitEvent, getEvent, getToken, getAllEvents, getAllTokens, getTreeProof, postEvent, postToken };
+export { submitEvent, getEvent, getToken, getAllEvents, getAllTokens, getTreeProof, postEvent, postToken, getTree };
 
 // export default async function handlerEvents(req, res) {
 //   if (req.method === 'GET') {
