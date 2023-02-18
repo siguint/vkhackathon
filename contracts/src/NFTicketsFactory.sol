@@ -11,11 +11,17 @@ import { LibString } from "contracts/lib/solady.git/src/utils/LibString.sol";
 import { NFTickets } from "./NFTickets.sol";
 
 contract NFTicketsFactory is Owned, Pausable {
+    error NoEvent();
+
+    event CreateEvent(address event_, address owner, uint256 startDate);
+
     struct Event {
         address event_;
+        address owner;
+        uint256 startDate;
     }
 
-    Event[] private _events;
+    address[] private _events;
     mapping(address => uint256) private _eventIndexes;
 
     string public uri;
@@ -26,12 +32,16 @@ contract NFTicketsFactory is Owned, Pausable {
         _implementation = address(new NFTickets());
     }
 
-    function createEvent() external whenNotPaused returns (address) {
+    function createEvent(
+        uint256 startDate
+    ) external whenNotPaused returns (address) {
         address event_ = Clones.clone(_implementation);
-        NFTickets(event_).initialize(msg.sender);
+        NFTickets(event_).initialize(msg.sender, startDate);
 
         _eventIndexes[event_] = _events.length;
-        _events.push(Event({ event_: event_ }));
+        _events.push(event_);
+
+        emit CreateEvent(event_, msg.sender, startDate);
 
         return event_;
     }
@@ -39,6 +49,9 @@ contract NFTicketsFactory is Owned, Pausable {
     function eventURI(
         address event_
     ) external view returns (string memory uri_) {
+        if (event_ != _events[_eventIndexes[event_]] || event_ == address(0)) {
+            revert NoEvent();
+        }
         uri_ = LibString.concat(uri, LibString.toHexString(event_));
     }
 
@@ -61,8 +74,15 @@ contract NFTicketsFactory is Owned, Pausable {
             }
 
             events = new Event[](length);
+            address curEvent;
             for (uint256 i; i != length; ++i) {
-                events[i] = _events[cursor];
+                curEvent = _events[cursor];
+
+                events[i] = Event({
+                    event_: curEvent,
+                    owner: NFTickets(curEvent).owner(),
+                    startDate: NFTickets(curEvent).startDate()
+                });
                 ++cursor;
             }
 
