@@ -7,3 +7,6 @@
 [submodule "lib/openzeppelin-contracts.git"]
 	path = contracts/lib/openzeppelin-contracts.git
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts.git
+[submodule "contracts/lib/solady.git"]
+	path = contracts/lib/solady.git
+	url = https://github.com/Vectorized/solady.git

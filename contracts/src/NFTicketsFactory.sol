@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import { Owned } from "lib/solmate.git/src/auth/Owned.sol";
+import { Owned } from "contracts/lib/solmate.git/src/auth/Owned.sol";
 
-import { Clones } from "lib/openzeppelin-contracts.git/contracts/proxy/Clones.sol";
-import { Pausable } from "lib/openzeppelin-contracts.git/contracts/security/Pausable.sol";
+import { Clones } from "contracts/lib/openzeppelin-contracts.git/contracts/proxy/Clones.sol";
+import { Pausable } from "contracts/lib/openzeppelin-contracts.git/contracts/security/Pausable.sol";
+
+import { LibString } from "contracts/lib/solady.git/src/utils/LibString.sol";
 
 import { NFTickets } from "./NFTickets.sol";
 
@@ -37,7 +39,7 @@ contract NFTicketsFactory is Owned, Pausable {
     function eventURI(
         address event_
     ) external view returns (string memory uri_) {
-        uri_ = string(abi.encodePacked(uri, event_));
+        uri_ = LibString.concat(uri, LibString.toHexString(event_));
     }
 
     function getEvents(

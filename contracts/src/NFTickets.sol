@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import { Owned } from "lib/solmate.git/src/auth/Owned.sol";
-import { MerkleProofLib } from "lib/solmate.git/src/utils/MerkleProofLib.sol";
-import { ERC1155 } from "lib/solmate.git/src/tokens/ERC1155.sol";
+import { Owned } from "contracts/lib/solmate.git/src/auth/Owned.sol";
+import { MerkleProofLib } from "contracts/lib/solmate.git/src/utils/MerkleProofLib.sol";
+import { ERC1155 } from "contracts/lib/solmate.git/src/tokens/ERC1155.sol";
 
-import { Initializable } from "lib/openzeppelin-contracts.git/contracts/proxy/utils/Initializable.sol";
-import { Pausable } from "lib/openzeppelin-contracts.git/contracts/security/Pausable.sol";
+import { Initializable } from "contracts/lib/openzeppelin-contracts.git/contracts/proxy/utils/Initializable.sol";
+import { Pausable } from "contracts/lib/openzeppelin-contracts.git/contracts/security/Pausable.sol";
+
+import { LibString } from "contracts/lib/solady.git/src/utils/LibString.sol";
 
 import { NFTicketsFactory } from "./NFTicketsFactory.sol";
 
@@ -93,8 +95,12 @@ contract NFTickets is Initializable, ERC1155, Pausable {
     function uri(
         uint256 id
     ) public view override returns (string memory tokenURI) {
-        tokenURI = string(
-            abi.encodePacked(NFTicketsFactory(factory).uri(), factory, id)
+        tokenURI = LibString.concat(
+            NFTicketsFactory(factory).uri(),
+            LibString.concat(
+                LibString.toHexString(address(this)),
+                LibString.concat("/", LibString.toString(id))
+            )
         );
     }
 
