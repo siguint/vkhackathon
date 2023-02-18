@@ -1,0 +1,22 @@
+version: '3'
+services:
+  start:
+    build: 
+      context: .
+      dockerfile: ./docker/run/Dockerfile
+    ports:
+     - "10888:10888"
+    volumes:
+     - .:/app
+    command: npm run start
+  deploy:
+    build: 
+      context: .
+      dockerfile: ./docker/tunnel/Dockerfile
+    depends_on:
+    - start
+    volumes:
+     - .:/app
+    ports:
+      - "10889:10889"
+    command: npm run tunnel

@@ -1,3 +1,6 @@
+mini-app/node_modules
+nfthack/node_modules
+
 # Compiler files
 cache/
 out/
