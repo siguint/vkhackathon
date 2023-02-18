@@ -29,18 +29,21 @@ contract NFTicketsFactory is Owned, Pausable {
         NFTickets(event_).initialize(msg.sender);
 
         _eventIndexes[event_] = _events.length;
-        _events.push(Event({
-            event_: event_
-        }));
+        _events.push(Event({ event_: event_ }));
 
         return event_;
     }
 
-    function eventURI(address event_) external view returns (string memory uri_) {
+    function eventURI(
+        address event_
+    ) external view returns (string memory uri_) {
         uri_ = string(abi.encodePacked(uri, event_));
     }
 
-    function getEvents(uint256 cursor, uint256 amount) external view returns (Event[] memory events, uint256 newCursor) {
+    function getEvents(
+        uint256 cursor,
+        uint256 amount
+    ) external view returns (Event[] memory events, uint256 newCursor) {
         unchecked {
             uint256 numEvents = _events.length;
             if (numEvents == 0) {
@@ -64,7 +67,7 @@ contract NFTicketsFactory is Owned, Pausable {
             newCursor = cursor;
         }
     }
-    
+
     function setURI(string memory uri_) external onlyOwner {
         uri = uri_;
     }
