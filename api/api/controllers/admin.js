@@ -1,5 +1,6 @@
 import { clientPromise } from "../utils/mongodb";
 import { ethers } from "ethers"
+import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
 
 const submitEvent = async (req, res) => {
   res.status(200).json({ success: true });
@@ -21,7 +22,7 @@ const getToken = async (req, res) => {
     const client = await clientPromise
     const collection = client.db(DB_NAME).collection('Tokens')
     const token_id = await collection.findOne({address : req.params.address, token_id : req.params.token_id})
-    res.status(200).json({ result: token_id });
+    res.status(200).json({ success: true, result: token_id });
   } catch (e) {
   res.status(400).json({ success: false, result: e.message });
   }
@@ -33,7 +34,7 @@ const getAllEvents = async (req, res) => {//all events
     const collection = await client.db(DB_NAME).collection('Events');
     const cursor = await collection.find({})
     let events = await cursor.toArray()
-    res.status(200).json({ result: events })
+    res.status(200).json({ success: true, result: events })
   } catch (e) {
     res.status(400).json({ success: false, result: e.message });
   }
@@ -45,7 +46,7 @@ const getAllTokens = async (req, res) => {//all tokens from event
     const collection = await client.db(DB_NAME).collection('Tokens')
     const cursor = await collection.find({address: req.params.address})
     let tokens = await cursor.toArray()
-    res.status(200).json({ result: tokens })
+    res.status(200).json({ success: true, result: tokens })
   } catch (e) {
     res.status(400).json({ success: false, result: e.message });
   }   
@@ -55,8 +56,9 @@ const getTree = async (req, res) => {
   try {
     const client = await clientPromise
     const collection = await client.db(DB_NAME).collection('Trees')
-    const tree = await collection.find({event: req.params.event})
-    res.status(200).json({result : tree})
+    const tree = await collection.findOne({event: req.params.event})
+    if (!tree) { res.status(200).json({result : (StandardMerkleTree.of([], ["address", "uint256"])).dump()}) }
+    else res.status(200).json({ success: true, result : tree })
   } catch (e) {
     res.status(400).json({ success: false, result: e.message });
   }
@@ -66,15 +68,15 @@ const getTreeProof = async (req, res) => {
   try {
     const client = await clientPromise
     const collection = await client.db(DB_NAME).collection('Trees')
-    const tree = await collection.find({event: req.params.event})
-    const wallet = ethers.utils.verifyWallet(req.params.signature, message);
+    const tree = await collection.findOne({event: req.params.event})
+    const true_tree = StandardMerkleTree.load(tree);
+    const wallet = ethers.utils.verifyMessage(message, req.params.signature)
     //if(wallet === "0x") {throw new UnauthorizedError}
-    const [i] = tree
+    const [i] = true_tree
     .entries()
     .find(([_, v]) => v[0] === wallet && v[0] === wallet);
-
-    const proof = tree.getProof(i);
-    res.status(200).json({result : proof})
+    const proof = true_tree.getProof(i);
+    res.status(200).json({ success: true, result : proof})
   } catch (e) {
     res.status(400).json({ success: false, result: e.message });
   } 
@@ -86,7 +88,7 @@ const postEvent = async (req, res) => {
   try {
     const client = await clientPromise
     const products = await client.db(DB_NAME).products('Events')
-    const wallet = ethers.utils.verifyWallet(req.params.signature, message);
+    const wallet = ethers.utils.verifyMessage(message, req.params.signature)
     //if(wallet === ) {throw new UnauthorizedError}
     products.insert({address : req.body.address, event : req.body.event, text : req.body.text});
     res.status(200).json({success: true})
@@ -99,7 +101,7 @@ const postToken = async (req, res) => {
   try {
     const client = await clientPromise
     const products = await client.db(DB_NAME).products('Tokens') 
-    const wallet = ethers.utils.verifyWallet(req.params.signature, message);
+    const wallet = ethers.utils.verifyMessage(message, req.params.signature)
     //if(wallet === ) {throw new UnauthorizedError}
     products.insert({event : req.body.event, token_id : req.params.token_id, name : req.body.name});
     res.status(200).json({success: true})
@@ -112,9 +114,9 @@ const postTree = async (req, res) => {
   try {
     const client = await clientPromise
     const products = await client.db(DB_NAME).products('Tree')
-    const wallet = ethers.utils.verifyWallet(req.params.signature, message);
+    const wallet = ethers.utils.verifyMessage(message, req.params.signature)
     //if(wallet === ) {throw new UnauthorizedError}
-    products.insert({event : req.body.event, tree : JSON.stringify(req.body.tree) });
+    products.insert({event : req.body.event, tree : req.body.tree });
     res.status(200).json({success: true})
   } catch (e) {
     res.status(400).json({ success: false, result: e.message });
