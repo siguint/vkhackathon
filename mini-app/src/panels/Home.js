@@ -19,12 +19,33 @@ const Home = ({ id, go, fetchedUser }) => (
 		<Group header={<Header mode="secondary">Navigation Example</Header>}>
 			<Div>
 				<Button stretched size="l" mode="secondary" onClick={go} data-to="persik">
-					Show me the Persik, ple a
+					Show me the Persik, please
 				</Button>
 			</Div>
 		</Group>
+
+		<Group header={<Header mode="secondary">Создание мероприятия</Header>}>
+			<Div>
+				<Button stretched size="l" onClick={go} data-to="create">
+					Создать новое мероприятие
+				</Button>
+			</Div>
+		</Group>
+
+		<Group header={<Header mode="secondary">Купить билет</Header>}>
+			<Div>
+				<Button stretched size="l" onClick={go} data-to="available">
+					Посмотреть доступные мероприятия
+				</Button>
+			</Div>
+		</Group>
+
 	</Panel>
+
 );
+
+
+
 
 Home.propTypes = {
 	id: PropTypes.string.isRequired,

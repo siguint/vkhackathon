@@ -3,10 +3,6 @@ import bridge from '@vkontakte/vk-bridge';
 import { View, ScreenSpinner, AdaptivityProvider, AppRoot, ConfigProvider, SplitLayout, SplitCol } from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css';
 import '@rainbow-me/rainbowkit/styles.css'
-
-import Home from './panels/Home';
-import Persik from './panels/Persik';
-
 import {
   getDefaultWallets,
   RainbowKitProvider,
@@ -16,6 +12,11 @@ import { mainnet, polygon, optimism, arbitrum } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import Home from './panels/Home';
+import Persik from './panels/Persik';
+import CreateNew from './panels/CreateNewEvent';
+import MyTicket from './panels/MyTickets';
+import AvailableEvents from './panels/AvailableEvents';
 
 const App = () => {
 	const [activePanel, setActivePanel] = useState('home');
@@ -39,7 +40,6 @@ const App = () => {
         connectors,
         provider
     })
-
 	useEffect(() => {
 		async function fetchData() {
 			const user = await bridge.send('VKWebAppGetUserInfo');
@@ -53,13 +53,31 @@ const App = () => {
 		setActivePanel(e.currentTarget.dataset.to);
 	};
 
-    return (
-        <WagmiConfig client={wagmiClient}>
-        <RainbowKitProvider chains={chains}>
-        <YourApp />
-        </RainbowKitProvider>
-        </WagmiConfig>
-    );
+	return (
+		<ConfigProvider>
+			<AdaptivityProvider>
+				<AppRoot>
+					<SplitLayout >
+						<SplitCol>
+							<View activePanel={activePanel}>
+								<Home id='home' fetchedUser={fetchedUser} go={go} />
+								<MyTicket id='mytickets' go={go} />
+								<Persik id='persik' go={go} />
+								<CreateNew id='create' go={go} />
+								<AvailableEvents id='available' go={go} />
+
+							</View>
+							<WagmiConfig client={wagmiClient}>
+								<RainbowKitProvider chains={chains}>
+									<YourApp />
+								</RainbowKitProvider>
+							</WagmiConfig>
+						</SplitCol>
+					</SplitLayout>
+				</AppRoot>
+			</AdaptivityProvider>
+		</ConfigProvider>
+	);
 }
 export const YourApp = () => {
   return (
