@@ -10,7 +10,7 @@ import { Pausable } from "lib/openzeppelin-contracts.git/contracts/security/Paus
 
 import { NFTicketsFactory } from "./NFTicketsFactory.sol";
 
-contract NFTickets is Initializable, ERC1155, Pausable  {
+contract NFTickets is Initializable, ERC1155, Pausable {
     error ImproperProof();
     error AlreadyClaimed();
 
@@ -18,7 +18,7 @@ contract NFTickets is Initializable, ERC1155, Pausable  {
 
     mapping(uint256 => string) private _tokenURIs;
     mapping(address => bool) public ticketClaimed;
-    
+
     uint256[] private _tokenIds;
     mapping(uint256 => uint256) private _tokenIdIndexes;
 
@@ -35,7 +35,7 @@ contract NFTickets is Initializable, ERC1155, Pausable  {
     function initialize(address _owner) external initializer {
         owner = _owner;
         emit OwnershipTransferred(address(0), _owner);
-        
+
         factory = msg.sender;
     }
 
@@ -53,7 +53,7 @@ contract NFTickets is Initializable, ERC1155, Pausable  {
         if (ticketClaimed[msg.sender]) {
             revert AlreadyClaimed();
         }
-        
+
         ticketClaimed[msg.sender] = true;
 
         _tokenIdIndexes[tokenId] = _tokenIds.length;
@@ -62,7 +62,10 @@ contract NFTickets is Initializable, ERC1155, Pausable  {
         _mint(msg.sender, tokenId, 1, "");
     }
 
-    function getMintedTokenIds(uint256 cursor, uint256 amount) external view returns (uint256[] memory tokenIds, uint256 newCursor) {
+    function getMintedTokenIds(
+        uint256 cursor,
+        uint256 amount
+    ) external view returns (uint256[] memory tokenIds, uint256 newCursor) {
         unchecked {
             uint256 numTokenIds = _tokenIds.length;
             if (numTokenIds == 0) {
@@ -87,8 +90,12 @@ contract NFTickets is Initializable, ERC1155, Pausable  {
         }
     }
 
-    function uri(uint256 id) public view override returns (string memory tokenURI) {
-        tokenURI = string(abi.encodePacked(NFTicketsFactory(factory).uri(), factory, id));
+    function uri(
+        uint256 id
+    ) public view override returns (string memory tokenURI) {
+        tokenURI = string(
+            abi.encodePacked(NFTicketsFactory(factory).uri(), factory, id)
+        );
     }
 
     function setMerkleRoot(bytes32 merkleRoot_) external onlyOwner {
