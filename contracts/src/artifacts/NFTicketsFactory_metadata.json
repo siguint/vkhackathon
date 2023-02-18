@@ -36,6 +36,32 @@
 				"type": "event"
 			},
 			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "Paused",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "Unpaused",
+				"type": "event"
+			},
+			{
 				"inputs": [],
 				"name": "createEvent",
 				"outputs": [
@@ -117,6 +143,26 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "pause",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "paused",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "string",
@@ -144,6 +190,13 @@
 			},
 			{
 				"inputs": [],
+				"name": "unpause",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "uri",
 				"outputs": [
 					{
@@ -158,7 +211,11 @@
 		],
 		"devdoc": {
 			"kind": "dev",
-			"methods": {},
+			"methods": {
+				"paused()": {
+					"details": "Returns true if the contract is paused, and false otherwise."
+				}
+			},
 			"version": 1
 		},
 		"userdoc": {
@@ -169,7 +226,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"src/NFTicketsFactory.sol": "NFTicketsFactory"
+			"contracts/src/NFTicketsFactory.sol": "NFTicketsFactory"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -180,13 +237,10 @@
 			"enabled": true,
 			"runs": 200
 		},
-		"remappings": [
-			":ds-test/=lib/forge-std/lib/ds-test/src/",
-			":forge-std/=lib/forge-std/src/"
-		]
+		"remappings": []
 	},
 	"sources": {
-		"lib/openzeppelin-contracts.git/contracts/proxy/Clones.sol": {
+		"contracts/lib/openzeppelin-contracts.git/contracts/proxy/Clones.sol": {
 			"keccak256": "0xc02061f2a10a957cc6681e58216e71bcc624d00dd6edab8fbcc5dcd6b24a2825",
 			"license": "MIT",
 			"urls": [
@@ -194,7 +248,7 @@
 				"dweb:/ipfs/QmVgBvkGn1CxHPC4SJfauM82aUSvUKRFqDtrXiz29HL9u3"
 			]
 		},
-		"lib/openzeppelin-contracts.git/contracts/proxy/utils/Initializable.sol": {
+		"contracts/lib/openzeppelin-contracts.git/contracts/proxy/utils/Initializable.sol": {
 			"keccak256": "0x254f9238c717ea74a1af05d4e24de286d55db8df859c60b66fac388eb53bc46e",
 			"license": "MIT",
 			"urls": [
@@ -202,7 +256,15 @@
 				"dweb:/ipfs/QmXyohPQgyZR4y6YZ2yrfEo5tv5PVSiSmkdVrwCnZTc7KN"
 			]
 		},
-		"lib/openzeppelin-contracts.git/contracts/utils/Address.sol": {
+		"contracts/lib/openzeppelin-contracts.git/contracts/security/Pausable.sol": {
+			"keccak256": "0x0b7aadc930e970256fbc353a8f5081e217ac0b1443e3d317cf4cb4cdf2445e3e",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://72d90b3fc3a34b2db50c05839f6088f638ddf16aceb379c48e8aa724840fd5f6",
+				"dweb:/ipfs/QmUoEoGEDs4sq7pbSS1G4asybFW1B4jJ4YjExM39a34BhX"
+			]
+		},
+		"contracts/lib/openzeppelin-contracts.git/contracts/utils/Address.sol": {
 			"keccak256": "0x9d0843efe7418f685e662378051ca0572b56e8ed4e87b97197fb535839d0e2f8",
 			"license": "MIT",
 			"urls": [
@@ -210,7 +272,23 @@
 				"dweb:/ipfs/QmeKRcBH8LegzqrtdTtEhZLyYeb7PFkAtChNbLA3fTkbKW"
 			]
 		},
-		"lib/solmate.git/src/auth/Owned.sol": {
+		"contracts/lib/openzeppelin-contracts.git/contracts/utils/Context.sol": {
+			"keccak256": "0x81d5fc973a522c8909d60be6a201869d46aa47b030b8813f60616404628c2b94",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://9755b505799e622d964a843a8ed1fd60fedffca230178e5cb95ae9280df4dcd2",
+				"dweb:/ipfs/QmRkhUYUUgRZ2QYJjmtQct2ubyYwS3bdUMhbuFYM12VfYn"
+			]
+		},
+		"contracts/lib/solady.git/src/utils/LibString.sol": {
+			"keccak256": "0x52ad1ebb093ff4510b9b09da39f08a9a209ce6a398d87c54279b221c06f9767b",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://4e9ced28816254b40f8e8f1a604def9607ca1b1d402cdcc66004862bd31c5c8d",
+				"dweb:/ipfs/QmX8coaBALnWqsxDtuAbRLwThqDYr93C8ddSxb8trXPMMr"
+			]
+		},
+		"contracts/lib/solmate.git/src/auth/Owned.sol": {
 			"keccak256": "0x32f4ee8fa19c888b9983285c717ea6a846ad83047a60fbd77f68a3f2693ddb21",
 			"license": "AGPL-3.0-only",
 			"urls": [
@@ -218,7 +296,7 @@
 				"dweb:/ipfs/Qmea5UbNPk8arMYS7NSRn5rjXLV5RWUMyQHLG8q6jufaNS"
 			]
 		},
-		"lib/solmate.git/src/tokens/ERC1155.sol": {
+		"contracts/lib/solmate.git/src/tokens/ERC1155.sol": {
 			"keccak256": "0x1879bb8610ccabbe85e4dca1608d26b6d63cfdedf84b4f03a986fd8947b65eb4",
 			"license": "AGPL-3.0-only",
 			"urls": [
@@ -226,7 +304,7 @@
 				"dweb:/ipfs/QmcCqakjWfsSzAJFLanfUwChHrLNvaqX1XeAdGZD97XdKb"
 			]
 		},
-		"lib/solmate.git/src/utils/MerkleProofLib.sol": {
+		"contracts/lib/solmate.git/src/utils/MerkleProofLib.sol": {
 			"keccak256": "0x9b947537522a9894fc95aa6f6e1dec32da6689152599d2104484cbd69637bfaf",
 			"license": "MIT",
 			"urls": [
@@ -234,20 +312,20 @@
 				"dweb:/ipfs/QmZriuh4hAbjoDnzxDKR61ugYZGmve258YBxwvKb9rz2Jq"
 			]
 		},
-		"src/NFTickets.sol": {
-			"keccak256": "0xce578e0ce4c7ce6bdfe8b9710670b493bc6910e4655c3557f5a88f763af3f52e",
+		"contracts/src/NFTickets.sol": {
+			"keccak256": "0x7200f5aa6f6e170ec8291f2f3592aec9e38f5dad7c07cedefa2b672ac60437d9",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://22ad232d21e0ee19b0998e2722e5cdcb22403ed65046d2a1bc0eb55291d20ea1",
-				"dweb:/ipfs/QmVuKQ7VVHRpiuq8PxJqdbrCrCXeNLKDYPNCz12Wgp35Ye"
+				"bzz-raw://4d82d04c7739aecba4c9c66d63c511223dc81a486b2a05c19a770beba4f76978",
+				"dweb:/ipfs/QmXGogoyXJJDqkZnCwpixHEbyWUBUMfnFdkbHwSh1gwMpm"
 			]
 		},
-		"src/NFTicketsFactory.sol": {
-			"keccak256": "0xc5da045db893274b28a23a846e3356b606fa2bdf983145799dba75208ba89c43",
+		"contracts/src/NFTicketsFactory.sol": {
+			"keccak256": "0x130cd6c1da54fde26d0dae9011c674b1a763e2757400f76c278af1c05b8f13c1",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://1180957d97416a34198653e9ffd420bdc0021390a95b659a9549f38ff737b4a1",
-				"dweb:/ipfs/Qma2u6VcobfRPNcv8QKEVroFENv9ZdBRHrDuZ4QqupLCu5"
+				"bzz-raw://c45da36fef330c54a1ec6b929475f861989be48d9fa9e3df33ec907ee18c7f6a",
+				"dweb:/ipfs/QmSwzkdWo7JsQ4toZckhdMS2AVz6zvcBogmrpEkvU7PW8h"
 			]
 		}
 	},

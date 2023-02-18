@@ -13,4 +13,5 @@ out/
 # Dotenv file
 .env
 
-contracts/node_modules
+./contracts/node_modules
+node_modules
