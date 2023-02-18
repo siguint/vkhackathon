@@ -18,6 +18,37 @@ import CreateNew from './panels/CreateNewEvent';
 import MyTicket from './panels/MyTickets';
 import AvailableEvents from './panels/AvailableEvents';
 
+import INFTicketsFactory from "../public/contracts/INFTicketsFactory.json";
+
+import {
+  useAccount,
+  useConnect,
+  useNetwork,
+  useProvider,
+  useContractWrite,
+  useSignMessage,
+  useSignTypedData,
+} from "wagmi";
+
+const { writeAsync: createEventWriteAsync } = useContractWrite({
+  address: "",
+  abi: INFTicketsFactory,
+  functionName: "createEvent",
+});
+
+const createEventHandler = async (timestamp) => {
+  let txn;
+  try {
+    txn = await (
+      await createEventWriteAsync({
+        recklesslySetUnpreparedArgs: [Math.floor(timestamp / 1000)],
+      })
+    ).wait();
+  } catch (e) {
+    throw new Error("Transaction failed!");
+  }
+};
+
 const App = () => {
 	const [activePanel, setActivePanel] = useState('home');
 	const [fetchedUser, setUser] = useState(null);
@@ -69,7 +100,7 @@ const App = () => {
 							</View>
 							<WagmiConfig client={wagmiClient}>
 								<RainbowKitProvider chains={chains}>
-									<YourApp />
+									<ConnectWalletApp />
 								</RainbowKitProvider>
 							</WagmiConfig>
 						</SplitCol>
@@ -79,7 +110,7 @@ const App = () => {
 		</ConfigProvider>
 	);
 }
-export const YourApp = () => {
+export const ConnectWalletApp = () => {
   return (
     <div
       style={{
