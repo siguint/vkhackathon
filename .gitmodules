@@ -1,9 +1,9 @@
 [submodule "lib/forge-std"]
-	path = lib/forge-std
+	path = contracts/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
 [submodule "lib/solmate.git"]
-	path = lib/solmate.git
+	path = contracts/lib/solmate.git
 	url = https://github.com/transmissions11/solmate.git
 [submodule "lib/openzeppelin-contracts.git"]
-	path = lib/openzeppelin-contracts.git
+	path = contracts/lib/openzeppelin-contracts.git
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts.git
