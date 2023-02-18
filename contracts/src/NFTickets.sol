@@ -15,6 +15,7 @@ import { NFTicketsFactory } from "./NFTicketsFactory.sol";
 contract NFTickets is Initializable, ERC1155, Pausable {
     error ImproperProof();
     error AlreadyClaimed();
+    error EventAlreadyStarted();
 
     event OwnershipTransferred(address indexed user, address indexed newOwner);
 
@@ -26,6 +27,7 @@ contract NFTickets is Initializable, ERC1155, Pausable {
 
     address public owner;
     address public factory;
+    uint256 public startDate;
     bytes32 public merkleRoot;
 
     modifier onlyOwner() {
@@ -34,17 +36,25 @@ contract NFTickets is Initializable, ERC1155, Pausable {
         _;
     }
 
-    function initialize(address _owner) external initializer {
-        owner = _owner;
-        emit OwnershipTransferred(address(0), _owner);
+    function initialize(
+        address owner_,
+        uint256 startDate_
+    ) external initializer {
+        owner = owner_;
+        emit OwnershipTransferred(address(0), owner_);
 
         factory = msg.sender;
+        startDate = startDate_;
     }
 
     function claim(
         bytes32[] calldata merkleProof,
         uint256 tokenId
     ) external whenNotPaused {
+        if (block.timestamp > startDate) {
+            revert EventAlreadyStarted();
+        }
+
         bytes32 leaf = keccak256(abi.encodePacked(msg.sender, tokenId));
         bool verified = MerkleProofLib.verify(merkleProof, merkleRoot, leaf);
 

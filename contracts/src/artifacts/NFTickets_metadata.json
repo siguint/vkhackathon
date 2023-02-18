@@ -12,6 +12,11 @@
 			},
 			{
 				"inputs": [],
+				"name": "EventAlreadyStarted",
+				"type": "error"
+			},
+			{
+				"inputs": [],
 				"name": "ImproperProof",
 				"type": "error"
 			},
@@ -303,8 +308,13 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "_owner",
+						"name": "owner_",
 						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "startDate_",
+						"type": "uint256"
 					}
 				],
 				"name": "initialize",
@@ -480,6 +490,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "startDate",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "bytes4",
@@ -648,19 +671,19 @@
 			]
 		},
 		"contracts/src/NFTickets.sol": {
-			"keccak256": "0x5c8da45b86626d069736f3ce68db4dab2a4f8226b5d59628e4fe76f012665f7c",
+			"keccak256": "0xbf50f6cfbc82ed7112d2f9bdbd4380993fb9405711eda8e446531b3e9290b912",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://05e7fba2afbabe681bc84710f56e89b990911a54d713cf01b8eeea7d2c1c46c7",
-				"dweb:/ipfs/Qmap9g3CpBSrxPLzgJn51diHA4pe5LK2PGZ5XWttG5iCu3"
+				"bzz-raw://f860c5d1607ca36f985af2598e1508c20d5a4974614b068a458c4c664a85b863",
+				"dweb:/ipfs/QmeCJ2KtTxnGoTy4Auxktw9bpLyFr6bjdo8PstqMJTuafN"
 			]
 		},
 		"contracts/src/NFTicketsFactory.sol": {
-			"keccak256": "0x130cd6c1da54fde26d0dae9011c674b1a763e2757400f76c278af1c05b8f13c1",
+			"keccak256": "0xb3fa4f5eef90cf97e52b260c9e4d9d8be9aa671a3e2dd64aa12bfdb08e9692f3",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://c45da36fef330c54a1ec6b929475f861989be48d9fa9e3df33ec907ee18c7f6a",
-				"dweb:/ipfs/QmSwzkdWo7JsQ4toZckhdMS2AVz6zvcBogmrpEkvU7PW8h"
+				"bzz-raw://7cc3ee9a27b21f85a734a9d8c1336fdfcc92130e6e8eccd28a8767c131d21fa5",
+				"dweb:/ipfs/QmNV7VnQzQx9Gn5bhR2ReMxBfAPzkSnLb3xFoHmuBSpNUj"
 			]
 		}
 	},

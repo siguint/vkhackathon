@@ -17,6 +17,36 @@
 				"type": "constructor"
 			},
 			{
+				"inputs": [],
+				"name": "NoEvent",
+				"type": "error"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "event_",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "startDate",
+						"type": "uint256"
+					}
+				],
+				"name": "CreateEvent",
+				"type": "event"
+			},
+			{
 				"anonymous": false,
 				"inputs": [
 					{
@@ -62,7 +92,13 @@
 				"type": "event"
 			},
 			{
-				"inputs": [],
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "startDate",
+						"type": "uint256"
+					}
+				],
 				"name": "createEvent",
 				"outputs": [
 					{
@@ -114,6 +150,16 @@
 								"internalType": "address",
 								"name": "event_",
 								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "owner",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "startDate",
+								"type": "uint256"
 							}
 						],
 						"internalType": "struct NFTicketsFactory.Event[]",
@@ -313,19 +359,19 @@
 			]
 		},
 		"contracts/src/NFTickets.sol": {
-			"keccak256": "0x7200f5aa6f6e170ec8291f2f3592aec9e38f5dad7c07cedefa2b672ac60437d9",
+			"keccak256": "0x18065559e33266635a3a1a99ea6ec2523ec593e4959e9c4436e2942c3ecf68c1",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://4d82d04c7739aecba4c9c66d63c511223dc81a486b2a05c19a770beba4f76978",
-				"dweb:/ipfs/QmXGogoyXJJDqkZnCwpixHEbyWUBUMfnFdkbHwSh1gwMpm"
+				"bzz-raw://50fbdbf97c7cb5f286a9d33f7f74bd12fad0f6dc67add6aac41d6bef568a655d",
+				"dweb:/ipfs/Qmf33QZzaUkaLfK9vzVQkkUvu1zQVzab6oDp4XA5kfk6a7"
 			]
 		},
 		"contracts/src/NFTicketsFactory.sol": {
-			"keccak256": "0x130cd6c1da54fde26d0dae9011c674b1a763e2757400f76c278af1c05b8f13c1",
+			"keccak256": "0xb3fa4f5eef90cf97e52b260c9e4d9d8be9aa671a3e2dd64aa12bfdb08e9692f3",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://c45da36fef330c54a1ec6b929475f861989be48d9fa9e3df33ec907ee18c7f6a",
-				"dweb:/ipfs/QmSwzkdWo7JsQ4toZckhdMS2AVz6zvcBogmrpEkvU7PW8h"
+				"bzz-raw://7cc3ee9a27b21f85a734a9d8c1336fdfcc92130e6e8eccd28a8767c131d21fa5",
+				"dweb:/ipfs/QmNV7VnQzQx9Gn5bhR2ReMxBfAPzkSnLb3xFoHmuBSpNUj"
 			]
 		}
 	},
